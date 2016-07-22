@@ -49,6 +49,7 @@
                 >
 
                 <EditText
+                    android:theme ="@style/SuperCoolAppBarActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -58,8 +59,10 @@
                     android:textSize="20sp"
                     android:textColorHint="#ffffff"
                     android:backgroundTint="#ffffff"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:textCursorDrawable="@null"/>
                 <EditText
+                    android:theme ="@style/SuperCoolAppBarActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
@@ -70,7 +73,8 @@
                     android:backgroundTint="#ffffff"
                     android:textColorHint="#ffffff"
                     android:textColor="#ffffff"
-                    android:textColorHighlight="#ffffff" />
+                    android:textColorHighlight="#ffffff"
+                    android:textCursorDrawable="@null"/>
 
                 <Button
                     android:id="@+id/signin"
