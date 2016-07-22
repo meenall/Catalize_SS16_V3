@@ -45,6 +45,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.ContentResolver;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.FirebaseStorage;
+
 public class Contacts extends AppCompatActivity {
     Context context = null;
     public static String person1 = "";
@@ -67,6 +73,14 @@ public class Contacts extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
         context = this;
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseApp app = FirebaseApp.getInstance();
+        //FirebaseStorage storage = FirebaseStorage.newInstance();
+        DatabaseReference myRef = database.getReference("chat");
+
+        myRef.push().setValue("Hello, World!");
+
         sharedPreferences = this.getSharedPreferences("com.catalizeapp.catalize_ss25", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_contacts);
         rlPBContainer = (RelativeLayout) findViewById(R.id.pbcontainer);
