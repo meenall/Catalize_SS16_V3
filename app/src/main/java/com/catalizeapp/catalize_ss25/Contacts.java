@@ -46,9 +46,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.ContentResolver;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.FirebaseApp;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
 //import com.google.firebase.database.FirebaseStorage;
 
 public class Contacts extends AppCompatActivity {
@@ -74,12 +74,12 @@ public class Contacts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseApp app = FirebaseApp.getInstance();
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //FirebaseApp app = FirebaseApp.getInstance();
         //FirebaseStorage storage = FirebaseStorage.newInstance();
-        DatabaseReference myRef = database.getReference("chat");
+        //DatabaseReference myRef = database.getReference("chat");
 
-        myRef.push().setValue("Hello, World!");
+        //myRef.push().setValue("Hello, World!");
 
         sharedPreferences = this.getSharedPreferences("com.catalizeapp.catalize_ss25", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_contacts);
