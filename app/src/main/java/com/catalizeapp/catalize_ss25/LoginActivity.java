@@ -1,5 +1,6 @@
 package com.catalizeapp.catalize_ss25;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -9,6 +10,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -24,11 +27,13 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -46,7 +51,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-
+    public static final int MY_PERMISSIONS_REQUEST_SMS = 0;
+    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 0;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -117,6 +123,72 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 } else {
                     sharedPreferences.edit().putString("name", name.getText().toString()).apply();
                     sharedPreferences.edit().putString("email", email.getText().toString()).apply(); //gets the shared preferences for email and name
+
+                    if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                            android.Manifest.permission.READ_CONTACTS)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        //Toast.makeText(context, "Contacts not granted.",
+                        //      Toast.LENGTH_SHORT).show();
+
+                        // Should we show an explanation?
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,
+                                android.Manifest.permission.READ_CONTACTS)) {
+
+                            // Show an expanation to the user *asynchronously* -- don't block
+                            // this thread waiting for the user's response! After the user
+                            // sees the explanation, try again to request the permission.
+
+                        } else {
+
+                            // No explanation needed, we can request the permission.
+
+                            ActivityCompat.requestPermissions(LoginActivity.this,
+                                    new String[]{android.Manifest.permission.READ_CONTACTS},
+                                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                        }
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        //Toast.makeText(context, "Contacts granted.",
+                        //      Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                            Manifest.permission.SEND_SMS)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        //Toast.makeText(context, "SMS not granted.",
+                        //      Toast.LENGTH_SHORT).show();
+
+                        // Should we show an explanation?
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,
+                                Manifest.permission.SEND_SMS)) {
+
+                            // Show an expanation to the user *asynchronously* -- don't block
+                            // this thread waiting for the user's response! After the user
+                            // sees the explanation, try again to request the permission.
+
+                        } else {
+
+                            // No explanation needed, we can request the permission.
+
+                            ActivityCompat.requestPermissions(LoginActivity.this,
+                                    new String[]{Manifest.permission.SEND_SMS},
+                                    MY_PERMISSIONS_REQUEST_SMS);
+
+                            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                            // app-defined int constant. The callback method gets the
+                            // result of the request.
+                        }
+                    } else {
+
+                        //Toast.makeText(context, "SMS granted.",
+                        //      Toast.LENGTH_SHORT).show();
+                    }
+
+
                     Intent intent = new Intent(LoginActivity.this, Contacts.class);
                     intent.putExtra("name_value", name.getText().toString());
                     intent.putExtra("email_value", email.getText().toString());
@@ -154,6 +226,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);*/
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 
     private void populateAutoComplete() {

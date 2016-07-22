@@ -1,11 +1,16 @@
 package com.catalizeapp.catalize_ss25;
 
+import android.*;
+import android.Manifest;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,10 +34,12 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -68,6 +75,7 @@ public class Contacts extends AppCompatActivity {
     Button btnOK = null;
     RelativeLayout rlPBContainer = null;
     private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -111,6 +119,7 @@ public class Contacts extends AppCompatActivity {
         person1 = "";
         person2 = "";
         newbie = false;
+
         int total = 0;
         StringBuffer sb = new StringBuffer();
         for (ContactObject bean : ContactsListClass.phoneList) {
@@ -206,6 +215,14 @@ public class Contacts extends AppCompatActivity {
         if (total == 2) {
             startActivityForResult(new Intent(Contacts.this, Account.class), 10);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 
     private void addContactsInList() {
