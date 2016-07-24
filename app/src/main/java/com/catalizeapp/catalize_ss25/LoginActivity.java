@@ -116,8 +116,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         View.OnClickListener listener = new View.OnClickListener() {
             public void onClick(View view) {
-                if (name.getText().toString().matches("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter your full name", Toast.LENGTH_SHORT).show();
+                if (name.getText().toString().matches("")|| !name.getText().toString().contains(" ")) {
+                    Toast.makeText(getApplicationContext(), "Please enter your first and last name", Toast.LENGTH_SHORT).show();
                 } else if (email.getText().toString().matches("")|| !email.getText().toString().contains("@")) {
                     Toast.makeText(getApplicationContext(), "Please enter a valid email address", Toast.LENGTH_SHORT).show();
                 } else {

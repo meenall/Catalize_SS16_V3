@@ -34,7 +34,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="25sp"
         android:paddingTop="10dp"
-        android:text="Report a Bug"
+        android:text="Please describe the problem:"
         android:id="@+id/textView2"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"

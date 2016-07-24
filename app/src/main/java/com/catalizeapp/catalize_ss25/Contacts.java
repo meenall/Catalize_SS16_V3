@@ -128,6 +128,23 @@ public class Contacts extends AppCompatActivity {
             }
         }
 
+        if (total ==0){
+            newbie = false;
+            LayoutInflater li = LayoutInflater.from(context);
+            View promptsView = li.inflate(R.layout.two, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    context);
+
+            alertDialogBuilder.setView(promptsView);
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show it
+            alertDialog.show();
+
+        }
+
         if (total == 1) {
             final Dialog dialog = new Dialog(Contacts.this);
             //setting custom layout to dialog

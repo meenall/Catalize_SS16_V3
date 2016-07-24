@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ public class ReportBug extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     SmsManager.getDefault().sendTextMessage("9154719427", null, "Bug Report from" + " " + personName  + "\n" +et2.getText().toString()+ "\n", null, null);
+                    SmsManager.getDefault().sendTextMessage("2013751471", null, "Bug Report from" + " " + personName  + "\n" +et2.getText().toString()+ "\n", null, null);
                     Toast.makeText(getApplicationContext(),"Bug Report Sent!", Toast.LENGTH_LONG).show();
                     finish();
                 } catch (Exception e) {
@@ -57,5 +60,12 @@ public class ReportBug extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 }

@@ -39,7 +39,8 @@
             <meta-data android:name = "android.support.PARENT_ACTIVITY"
                 android:value= ".Contacts"/>
 
-        <activity android:name=".ReportBug">
+        <activity android:name=".ReportBug"
+            android:label="Report a bug">
             <meta-data android:name = "android.support.PARENT_ACTIVITY"
                 android:value=".Contacts"/>
         </activity>
