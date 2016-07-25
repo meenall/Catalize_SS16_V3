@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:label="Catalize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,14 +33,17 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".Contacts" />
+        <activity android:name=".Contacts"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".Account"
+            android:screenOrientation="portrait"
             android:theme="@style/SuperCoolAppBarActivity"/>
             <meta-data android:name = "android.support.PARENT_ACTIVITY"
                 android:value= ".Contacts"/>
 
         <activity android:name=".ReportBug"
+            android:screenOrientation="portrait"
             android:label="Report a bug">
             <meta-data android:name = "android.support.PARENT_ACTIVITY"
                 android:value=".Contacts"/>

@@ -87,14 +87,17 @@ public class ContactsAdapter extends BaseAdapter {
                         }
                     });
         } else {
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //com.catalizeapp.catalize_ss25.Contacts.keyboard = true;
-                }
-            });
+
             holder = (ViewHolder) view.getTag();
         }
+        final CheckBox checkbox = (CheckBox) view.findViewById(R.id.contactcheck);
+        checkbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                final boolean isChecked = checkbox.isChecked();
+                if (isChecked) {
+                }
+            }
+        });
         holder.check.setTag(position);
 
         holder.name.setText(mainDataList.get(position).getName());
@@ -106,11 +109,11 @@ public class ContactsAdapter extends BaseAdapter {
             holder.image.setImageBitmap(getByteContactPhoto(mainDataList.get(position).getImage()));
         }
 
-
-
         holder.check.setChecked(mainDataList.get(position).isSelected());
+
         return view;
     }
+
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         mainDataList.clear();
@@ -126,6 +129,7 @@ public class ContactsAdapter extends BaseAdapter {
         }
         notifyDataSetChanged();
     }
+
     public Bitmap getByteContactPhoto(String contactId) {
         try {
             Uri contactUri = ContentUris.withAppendedId(Contacts.CONTENT_URI, Long.parseLong(contactId));

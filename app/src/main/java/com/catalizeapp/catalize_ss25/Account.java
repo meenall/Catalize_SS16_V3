@@ -145,7 +145,7 @@ public class Account extends AppCompatActivity {
         if (cancel) {
             cancel = false;
             Toast.makeText(context, "HI",
-                                Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();
         }
         final Intent sendIntent = new Intent(Intent.ACTION_VIEW);
         final EditText et=(EditText)findViewById(R.id.prompt);
@@ -251,4 +251,3 @@ public class Account extends AppCompatActivity {
     }
 
 }
-

@@ -10,7 +10,7 @@
         android:id="@+id/nameerror"
         android:text="Please choose at least one contact to introduce."
         android:layout_width="wrap_content"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="@color/colorPrimary"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge" />

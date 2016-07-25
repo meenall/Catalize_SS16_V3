@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ import android.content.ContentResolver;
 
 public class Contacts extends AppCompatActivity {
     Context context = null;
+    //public final View activityRootView2 = findViewById(R.id.root);
     public static String person1 = "";
     public static String person2 = "";
     public static String number1 = "";
@@ -73,7 +75,7 @@ public class Contacts extends AppCompatActivity {
     public static String newContact = "";
     ContactsAdapter objAdapter;
     ActionMenuItemView searchView2;
-    SearchView searchView;
+    public static SearchView searchView;
     ListView lv = null;
     LinearLayout llContainer = null;
     Button btnOK = null;
@@ -101,6 +103,7 @@ public class Contacts extends AppCompatActivity {
         btnOK.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                //keyboard = false;
                 final View activityRootView = findViewById(R.id.root);
                 activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -110,39 +113,17 @@ public class Contacts extends AppCompatActivity {
                         activityRootView.getWindowVisibleDisplayFrame(r);
 
                         int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-                        if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
+                        if (heightDiff > 30) { // if more than 100 pixels, its probably a keyboard...
                             keyboard = true;
                         }
                     }
                 });
-                // TODO Auto-generated method stub
-                if (!flag && keyboard || ok) { //search being used
-                    searchView2 = (ActionMenuItemView) findViewById(R.id.menu_search);
-                    searchView2.clearFocus();
-                    //searchView2.setQuery("", false);
-                } else {
-                    searchView = (SearchView) findViewById(R.id.menu_search);
-                    searchView.clearFocus();
-                    searchView.setQuery("", false);
-                }
+                searchView.clearFocus();
+                searchView.setQuery("", false);
                 getSelectedContacts();
             }
         });
         addContactsInList();
-        final View activityRootView = findViewById(R.id.root);
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                //r will be populated with the coordinates of your view that area still visible.
-                activityRootView.getWindowVisibleDisplayFrame(r);
-
-                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
-                if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
-                    keyboard = true;
-                }
-            }
-        });
     }
 
     private void getSelectedContacts() {
@@ -247,6 +228,12 @@ public class Contacts extends AppCompatActivity {
                                     //ok = true;
                                     // get user input and set it to result
                                     // edit text
+                                    CheckBox cb;
+                                    for(int i=0; i<lv.getChildCount();i++)
+                                    {
+                                        cb = (CheckBox)lv.getChildAt(i).findViewById(R.id.contactcheck);
+                                        cb.setChecked(false);
+                                    }
 
                                 }
                             });
@@ -293,6 +280,8 @@ public class Contacts extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.
                 INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        searchView.clearFocus();
+        searchView.setQuery("", false);
         return true;
     }
 
@@ -435,7 +424,7 @@ public class Contacts extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
 
         if (null != searchView) {
