@@ -29,6 +29,7 @@ import android.content.pm.PackageManager;
 
 public class Account extends AppCompatActivity {
 
+    boolean cancel = false;
     Context context = null;
     boolean flag = false;
     private String result;
@@ -90,6 +91,8 @@ public class Account extends AppCompatActivity {
                     .setNegativeButton("Cancel",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
+                                    cancel = true;
+                                    startActivityForResult(new Intent(Account.this, Contacts.class), 10);
                                     dialog.cancel();
                                 }
                             });
@@ -128,14 +131,7 @@ public class Account extends AppCompatActivity {
                                     }
                                     //Contacts.person1 = result;
                                 }
-                            })
-                    .setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
                             });
-
             // create alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
 
@@ -146,9 +142,11 @@ public class Account extends AppCompatActivity {
             prompt.setText("Hello " + Contacts.person1 + ", meet " + Contacts.person2 + ". I am introducing you two because...");
         }
 
-
-
-
+        if (cancel) {
+            cancel = false;
+            Toast.makeText(context, "HI",
+                                Toast.LENGTH_SHORT).show();
+        }
         final Intent sendIntent = new Intent(Intent.ACTION_VIEW);
         final EditText et=(EditText)findViewById(R.id.prompt);
         final TextView people = (TextView) findViewById(R.id.people);

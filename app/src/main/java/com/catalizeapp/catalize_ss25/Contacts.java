@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +38,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -65,6 +67,8 @@ public class Contacts extends AppCompatActivity {
     public static String number1 = "";
     public static String number2 = "";
     boolean flag = false;
+    public static boolean keyboard = false;
+    boolean ok = false;
     public static boolean newbie = false;
     public static String newContact = "";
     ContactsAdapter objAdapter;
@@ -97,8 +101,22 @@ public class Contacts extends AppCompatActivity {
         btnOK.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                final View activityRootView = findViewById(R.id.root);
+                activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect r = new Rect();
+                        //r will be populated with the coordinates of your view that area still visible.
+                        activityRootView.getWindowVisibleDisplayFrame(r);
+
+                        int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+                        if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
+                            keyboard = true;
+                        }
+                    }
+                });
                 // TODO Auto-generated method stub
-                if (!flag) {
+                if (!flag && keyboard || ok) { //search being used
                     searchView2 = (ActionMenuItemView) findViewById(R.id.menu_search);
                     searchView2.clearFocus();
                     //searchView2.setQuery("", false);
@@ -111,6 +129,20 @@ public class Contacts extends AppCompatActivity {
             }
         });
         addContactsInList();
+        final View activityRootView = findViewById(R.id.root);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                //r will be populated with the coordinates of your view that area still visible.
+                activityRootView.getWindowVisibleDisplayFrame(r);
+
+                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+                if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
+                    keyboard = true;
+                }
+            }
+        });
     }
 
     private void getSelectedContacts() {
@@ -119,6 +151,7 @@ public class Contacts extends AppCompatActivity {
         person1 = "";
         person2 = "";
         newbie = false;
+        ok = true;
 
         int total = 0;
         StringBuffer sb = new StringBuffer();
@@ -137,15 +170,26 @@ public class Contacts extends AppCompatActivity {
                     context);
 
             alertDialogBuilder.setView(promptsView);
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    flag = true;
+                                    ok = true;
+                                    // get user input and set it to result
+                                    // edit text
+
+                                }
+                            });
 
             // create alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             // show it
             alertDialog.show();
 
-        }
+        } else if (total == 1) {
 
-        if (total == 1) {
             final Dialog dialog = new Dialog(Contacts.this);
             //setting custom layout to dialog
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //before
@@ -177,6 +221,7 @@ public class Contacts extends AppCompatActivity {
                         person2 = newname.getText().toString();
                         number2 = newperson.getText().toString();
                         newbie = true;
+
                         startActivityForResult(new Intent(Contacts.this, Account.class), 10);
                         dialog.dismiss();
                     }
@@ -186,50 +231,59 @@ public class Contacts extends AppCompatActivity {
         } else if (total != 2) {
             newbie = false;
             LayoutInflater li = LayoutInflater.from(context);
-            View promptsView = li.inflate(R.layout.two, null);
+            View promptsView = li.inflate(R.layout.three, null);
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     context);
 
             alertDialogBuilder.setView(promptsView);
 
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    flag = true;
+                                    //ok = true;
+                                    // get user input and set it to result
+                                    // edit text
+
+                                }
+                            });
             // create alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             // show it
             alertDialog.show();
         }
 
-        for (ContactObject bean : ContactsListClass.phoneList) {
-            if (bean.isSelected()) {
-                bean.setSelected(false);
-                sb.append(bean.getName());
-                if (number1 == "") {
-                    number1 = bean.getNumber();
-                } else {
-                    if (!newbie) {
-                        number2 = bean.getNumber();
+        if (total == 2 || newbie) {
+            for (ContactObject bean : ContactsListClass.phoneList) {
+                if (bean.isSelected()) {
+                    bean.setSelected(false);
+                    sb.append(bean.getName());
+                    if (number1 == "") {
+                        number1 = bean.getNumber();
+                    } else {
+                        if (!newbie) {
+                            number2 = bean.getNumber();
+                        }
                     }
-                }
-                sb.append(",");
-                if (person1 == "") {
-                    person1 = bean.getName();
-                } else {
-                    if (!newbie) {
-                        person2 = bean.getName();
+                    sb.append(",");
+                    if (person1 == "") {
+                        person1 = bean.getName();
+                    } else {
+                        if (!newbie) {
+                            person2 = bean.getName();
+                        }
                     }
                 }
             }
-        }
-
-        CheckBox cb;
-
-        for(int i=0; i<lv.getChildCount();i++)
-        {
-            cb = (CheckBox)lv.getChildAt(i).findViewById(R.id.contactcheck);
-            cb.setChecked(false);
-        }
-
-        if (total == 2) {
+            CheckBox cb;
+            for(int i=0; i<lv.getChildCount();i++)
+            {
+                cb = (CheckBox)lv.getChildAt(i).findViewById(R.id.contactcheck);
+                cb.setChecked(false);
+            }
             startActivityForResult(new Intent(Contacts.this, Account.class), 10);
         }
     }

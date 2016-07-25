@@ -9,12 +9,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.ContactsContract.Contacts;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -51,6 +53,7 @@ public class ContactsAdapter extends BaseAdapter {
     public int getCount() {
         return mainDataList.size();
     }
+
     @Override
     public ContactObject getItem(int position) {
         return mainDataList.get(position);
@@ -84,6 +87,12 @@ public class ContactsAdapter extends BaseAdapter {
                         }
                     });
         } else {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //com.catalizeapp.catalize_ss25.Contacts.keyboard = true;
+                }
+            });
             holder = (ViewHolder) view.getTag();
         }
         holder.check.setTag(position);

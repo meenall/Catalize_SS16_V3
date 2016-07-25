@@ -8,11 +8,11 @@
 
     <TextView
         android:id="@+id/nameerror"
-        android:text="Please choose at least one contact to introduce."
+        android:text="Too many contacts selected! Please select 2 contacts at most."
         android:layout_width="wrap_content"
-        android:textSize="16sp"
         android:textColor="@color/colorPrimary"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Space
