@@ -35,7 +35,8 @@ public class Account extends AppCompatActivity {
     private String result;
     private String result2;
     private SharedPreferences sharedPreferences;
-    private String personName;
+    private String firstName;
+    private String lastName;
     private String personEmail;
 
 
@@ -160,15 +161,17 @@ public class Account extends AppCompatActivity {
         //sendIntent.setType("vnd.android-dir/mms-sms");
 
         Button send = (Button) findViewById(R.id.send);
-        personName= sharedPreferences.getString("name","");
+       firstName = sharedPreferences.getString("first_name","");
+        lastName = sharedPreferences.getString("last_name","");
+
         personEmail  = sharedPreferences.getString("email", "");
         send.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 try {
-                    SmsManager.getDefault().sendTextMessage("9154719427 ", null, "Introduction made by: "+ personName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1 + "\n" + Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
-                    SmsManager.getDefault().sendTextMessage("2013751471 ", null, "Introduction made by: "+ personName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1 + "\n" + Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
+                    SmsManager.getDefault().sendTextMessage("9154719427 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1 + "\n" + Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
+                    SmsManager.getDefault().sendTextMessage("2013751471 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1 + "\n" + Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
                     //SmsManager.getDefault().sendTextMessage("2013751471 ", null, Contacts.number1 + "\n" + Contacts.number2, null, null);
 
                     LayoutInflater li = LayoutInflater.from(context);
