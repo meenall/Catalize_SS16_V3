@@ -124,70 +124,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     sharedPreferences.edit().putString("name", name.getText().toString()).apply();
                     sharedPreferences.edit().putString("email", email.getText().toString()).apply(); //gets the shared preferences for email and name
 
-                    if (ContextCompat.checkSelfPermission(LoginActivity.this,
-                            android.Manifest.permission.READ_CONTACTS)
-                            != PackageManager.PERMISSION_GRANTED) {
+                    if (Integer.valueOf(android.os.Build.VERSION.SDK) >= 23) {
+                        ActivityCompat.requestPermissions(LoginActivity.this,
+                                new String[]{android.Manifest.permission.READ_CONTACTS},
+                                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
 
-                        //Toast.makeText(context, "Contacts not granted.",
-                        //      Toast.LENGTH_SHORT).show();
+                        ActivityCompat.requestPermissions(LoginActivity.this,
+                                new String[]{Manifest.permission.SEND_SMS},
+                                MY_PERMISSIONS_REQUEST_SMS);
 
-                        // Should we show an explanation?
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,
-                                android.Manifest.permission.READ_CONTACTS)) {
-
-                            // Show an expanation to the user *asynchronously* -- don't block
-                            // this thread waiting for the user's response! After the user
-                            // sees the explanation, try again to request the permission.
-
-                        } else {
-
-                            // No explanation needed, we can request the permission.
-
-                            ActivityCompat.requestPermissions(LoginActivity.this,
-                                    new String[]{android.Manifest.permission.READ_CONTACTS},
-                                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-                        }
-                    } else {
-
-                        // No explanation needed, we can request the permission.
-
-                        //Toast.makeText(context, "Contacts granted.",
-                        //      Toast.LENGTH_SHORT).show();
                     }
-
-                    if (ContextCompat.checkSelfPermission(LoginActivity.this,
-                            Manifest.permission.SEND_SMS)
-                            != PackageManager.PERMISSION_GRANTED) {
-
-                        //Toast.makeText(context, "SMS not granted.",
-                        //      Toast.LENGTH_SHORT).show();
-
-                        // Should we show an explanation?
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this,
-                                Manifest.permission.SEND_SMS)) {
-
-                            // Show an expanation to the user *asynchronously* -- don't block
-                            // this thread waiting for the user's response! After the user
-                            // sees the explanation, try again to request the permission.
-
-                        } else {
-
-                            // No explanation needed, we can request the permission.
-
-                            ActivityCompat.requestPermissions(LoginActivity.this,
-                                    new String[]{Manifest.permission.SEND_SMS},
-                                    MY_PERMISSIONS_REQUEST_SMS);
-
-                            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                            // app-defined int constant. The callback method gets the
-                            // result of the request.
-                        }
-                    } else {
-
-                        //Toast.makeText(context, "SMS granted.",
-                        //      Toast.LENGTH_SHORT).show();
-                    }
-
 
                     Intent intent = new Intent(LoginActivity.this, Contacts.class);
                     intent.putExtra("name_value", name.getText().toString());
