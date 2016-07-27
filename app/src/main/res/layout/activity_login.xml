@@ -31,10 +31,11 @@
         <ScrollView
             android:id="@+id/login_form"
             android:layout_gravity="bottom"
-            android:background="#FAFAFA"
+            android:background="#212120"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:layout_below = "@drawable/white_logo"
             >
 
             <LinearLayout
@@ -47,6 +48,14 @@
                 android:gravity="bottom|end"
                 android:layout_gravity="center_horizontal|bottom"
                 >
+                <ImageView
+                    android:layout_width="400dp"
+                    android:layout_height="297dp"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginTop="0dp"
+                    android:src="@drawable/white_logo"
+                    android:paddingBottom="120dp"
+                    android:nestedScrollingEnabled="false" />
 
                 <EditText
                     android:theme ="@style/SuperCoolAppBarActivity"
@@ -93,7 +102,7 @@
                     android:id="@+id/signin"
                     style="?android:textAppearanceSmall"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorPrimary"
                     android:textColor="#ffffff"
@@ -106,12 +115,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="219dp"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="0dp"
-            android:src="@drawable/white_logo" />
+
 
     </FrameLayout>
 

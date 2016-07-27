@@ -99,6 +99,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
 
+
         setContentView(R.layout.activity_login);
 
         final EditText firstName = (EditText) findViewById(R.id.first_name);
@@ -119,6 +120,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         View.OnClickListener listener = new View.OnClickListener() {
             public void onClick(View view) {
+
                 if (firstName.getText().toString().matches("")|| lastName.getText().toString().matches("")) {
                     Toast.makeText(getApplicationContext(), "Please enter your first and last name", Toast.LENGTH_SHORT).show();
                 } else if (email.getText().toString().matches("")|| !email.getText().toString().contains("@")) {
@@ -432,6 +434,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 mPasswordView.requestFocus();
             }
         }
+
 
         @Override
         protected void onCancelled() {

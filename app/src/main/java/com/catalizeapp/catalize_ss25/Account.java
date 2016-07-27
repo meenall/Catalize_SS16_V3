@@ -85,7 +85,8 @@ public class Account extends AppCompatActivity {
                                     // edit text
                                     result = userInput.getText().toString();
                                     result2 = userInput2.getText().toString();
-                                    prompt.setText("Hello " + result + ", meet " + result2 + ". I am introducing you two because...");
+                                    prompt.append("Hello " + result + ", meet " + result2 + ". I am introducing you two because ");
+                                    //prompt.setText("Hello " + result + ", meet " + result2 + ". I am introducing you two because...");
                                     //Contacts.person1 = result;
                                 }
                             })
@@ -126,9 +127,11 @@ public class Account extends AppCompatActivity {
                                     // edit text
                                     result = userInput.getText().toString();
                                     if (Contacts.person1.contains("@")) {
-                                        prompt.setText("Hello " + result + ", meet " + Contacts.person2 + ". I am introducing you two because...");
+                                        prompt.append("Hello " + result + ", meet " + Contacts.person2 + ". I am introducing you two because ");
+                                        //prompt.setText("Hello " + result + ", meet " + Contacts.person2 + ". I am introducing you two because...");
                                     } else {
-                                        prompt.setText("Hello " + Contacts.person1 + ", meet " + result + ". I am introducing you two because...");
+
+                                        prompt.append("Hello " + Contacts.person1 + ", meet " + result + ". I am introducing you two because ");
                                     }
                                     //Contacts.person1 = result;
                                 }
@@ -140,7 +143,7 @@ public class Account extends AppCompatActivity {
             alertDialog.show();
 
         } else {
-            prompt.setText("Hello " + Contacts.person1 + ", meet " + Contacts.person2 + ". I am introducing you two because...");
+            prompt.append("Hello " + Contacts.person1 + ", meet " + Contacts.person2 + ". I am introducing you two because ");
         }
 
         if (cancel) {
