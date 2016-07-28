@@ -80,7 +80,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         EditText name = (EditText) findViewById(R.id.name);
         EditText email = (EditText) findViewById(R.id.email);
         Button signIn = (Button) findViewById(R.id.signin);
-
         if (name.getText().toString().matches("")) {
             Toast.makeText(getApplicationContext(), "Please enter your full name", Toast.LENGTH_SHORT).show();
         } else if (email.getText().toString().matches("")) {
@@ -98,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
+
 
         setContentView(R.layout.activity_login);
 
@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         View.OnClickListener listener = new View.OnClickListener() {
             public void onClick(View view) {
+
                 if (firstName.getText().toString().matches("")|| lastName.getText().toString().matches("")) {
                     Toast.makeText(getApplicationContext(), "Please enter your first and last name", Toast.LENGTH_SHORT).show();
                 } else if (email.getText().toString().matches("")|| !email.getText().toString().contains("@")) {
@@ -140,12 +141,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
 
                     Intent intent = new Intent(LoginActivity.this, Contacts.class);
-                   // intent.putExtra("name_value", firstName.getText().toString());
+                    // intent.putExtra("name_value", firstName.getText().toString());
                     //intent.putExtra("last_name", lastName.getText().toString());
                     //intent.putExtra("email_value", email.getText().toString());
                     startActivity(intent);
                 }
-                    //startActivityForResult(new Intent(LoginActivity.this, Contacts.class), 10);
+                //startActivityForResult(new Intent(LoginActivity.this, Contacts.class), 10);
             }
         };
         Button btn1 = (Button)findViewById(R.id.signin);
@@ -154,7 +155,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         /*mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -166,7 +166,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-
         Button mEmailSignInButton = (Button) findViewById(R.id.signin);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -174,7 +173,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivityForResult(new Intent(LoginActivity.this, Contacts.class), 10);
             }
         });
-
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);*/
     }
@@ -433,6 +431,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
+
         @Override
         protected void onCancelled() {
             mAuthTask = null;
@@ -440,4 +439,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-

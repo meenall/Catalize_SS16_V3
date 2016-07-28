@@ -32,6 +32,7 @@ import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -69,6 +70,7 @@ public class Contacts extends AppCompatActivity {
     public static String number1 = "";
     public static String number2 = "";
     boolean flag = false;
+    public static boolean changed = false;
     public static boolean keyboard = false;
     boolean ok = false;
     public static boolean newbie = false;
@@ -87,13 +89,6 @@ public class Contacts extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
         context = this;
-
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //FirebaseApp app = FirebaseApp.getInstance();
-        //FirebaseStorage storage = FirebaseStorage.newInstance();
-        //DatabaseReference myRef = database.getReference("chat");
-
-        //myRef.push().setValue("Hello, World!");
 
         sharedPreferences = this.getSharedPreferences("com.catalizeapp.catalize_ss25", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_contacts);
@@ -123,7 +118,33 @@ public class Contacts extends AppCompatActivity {
                 getSelectedContacts();
             }
         });
+        if (ContextCompat.checkSelfPermission(Contacts.this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Contacts.this,
+                    Manifest.permission.READ_CONTACTS)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(Contacts.this,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        0);
+            }
+        }
         addContactsInList();
+    }
+
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Contacts.this, Contacts.class);
+            startActivity(intent);
+        } else {
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+        }
+        return;
     }
 
     private void getSelectedContacts() {
@@ -279,7 +300,7 @@ public class Contacts extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.
                 INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+//        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         searchView.clearFocus();
         searchView.setQuery("", false);
         return true;
@@ -347,6 +368,28 @@ public class Contacts extends AppCompatActivity {
                     }
                     phones.close();
                     cEmail.close();
+                    //Toast.makeText(context, ContactsListClass.phoneList.size(),
+                      //                    Toast.LENGTH_LONG).show();
+                    if (ContactsListClass.phoneList.size() < 1) {
+                        Toast.makeText(context, "hi",
+                                                    Toast.LENGTH_LONG).show();
+                       /* if (ContextCompat.checkSelfPermission(Contacts.this,
+                                Manifest.permission.READ_CONTACTS)
+                                != PackageManager.PERMISSION_GRANTED) {
+
+                            if (ActivityCompat.shouldShowRequestPermissionRationale(Contacts.this,
+                                    Manifest.permission.READ_CONTACTS)) {
+
+                            } else {
+                                ActivityCompat.requestPermissions(Contacts.this,
+                                        new String[]{Manifest.permission.READ_CONTACTS},
+                                        0);
+                            }
+                        }else {
+                            Intent intent = new Intent(Contacts.this, Contacts.class);
+                            startActivity(intent);
+                        }*/
+                    }
 
                     lv = new ListView(context);
                     lv.setLayoutParams(new LinearLayout.LayoutParams(
@@ -390,7 +433,12 @@ public class Contacts extends AppCompatActivity {
                             }
                         }
                     });
+                    if (changed) {
+                        //lv.notifyDataSetChanged();
+                    }
                 } catch (Exception e) {
+                    //Toast.makeText(context, "10",
+                      //      Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 hidePB();
@@ -485,7 +533,6 @@ public class Contacts extends AppCompatActivity {
                 finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

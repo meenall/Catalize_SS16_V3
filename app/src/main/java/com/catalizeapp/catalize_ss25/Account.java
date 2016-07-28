@@ -1,5 +1,6 @@
 package com.catalizeapp.catalize_ss25;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,6 +47,20 @@ public class Account extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.intro);
         context = this;
+        if (ContextCompat.checkSelfPermission(Account.this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Account.this,
+                    Manifest.permission.SEND_SMS)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(Account.this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        0);
+            }
+        }
         sharedPreferences = this.getSharedPreferences("com.catalizeapp.catalize_ss25", Context.MODE_PRIVATE);
 
         // toolbar
@@ -140,7 +155,7 @@ public class Account extends AppCompatActivity {
             alertDialog.show();
 
         } else {
-            prompt.setText("Hello " + Contacts.person1 + ", meet " + Contacts.person2 + ". I am introducing you two because...");
+            prompt.append("Hello " + Contacts.person1 + ", meet " + Contacts.person2 + ". I am introducing you two because ");
         }
 
         if (cancel) {
@@ -161,7 +176,7 @@ public class Account extends AppCompatActivity {
         //sendIntent.setType("vnd.android-dir/mms-sms");
 
         Button send = (Button) findViewById(R.id.send);
-       firstName = sharedPreferences.getString("first_name","");
+        firstName = sharedPreferences.getString("first_name","");
         lastName = sharedPreferences.getString("last_name","");
 
         personEmail  = sharedPreferences.getString("email", "");
@@ -169,10 +184,15 @@ public class Account extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                try {
-                    SmsManager.getDefault().sendTextMessage("9154719427 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1 + "\n" + Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
-                    SmsManager.getDefault().sendTextMessage("2013751471 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1 + "\n" + Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
-                    //SmsManager.getDefault().sendTextMessage("2013751471 ", null, Contacts.number1 + "\n" + Contacts.number2, null, null);
+                //try {
+                    Toast.makeText(context, "HI",
+                            Toast.LENGTH_SHORT).show();
+                    SmsManager.getDefault().sendTextMessage("9154719427 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1, null, null);
+                    SmsManager.getDefault().sendTextMessage("9154719427 ", null, Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
+                    SmsManager.getDefault().sendTextMessage("2013751471 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1, null, null);
+                    SmsManager.getDefault().sendTextMessage("2013751471 ", null, Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
+                    Toast.makeText(context, "Permissions",
+                            Toast.LENGTH_SHORT).show();
 
                     LayoutInflater li = LayoutInflater.from(context);
                     View promptsView = li.inflate(R.layout.sent, null);
@@ -207,32 +227,35 @@ public class Account extends AppCompatActivity {
                     //SmsManager.getDefault().sendTextMessage(Contacts.number1, null, "Respond to this message to continue the conversation.", null, null);
 
 
-                    try
-                    {
-                        Thread.sleep(000);//1sec
-                    }
-                    catch(InterruptedException ex)
-                    {
-                        ex.printStackTrace();
-                    }
-
                     //SmsManager.getDefault().sendTextMessage(Contacts.number2, null, "Meenal says: Hey " + Contacts.person2 +  "! Thanks for stopping by the Catalize booth at CreateX Product Day at Georgia Tech!", null, null);
                     //SmsManager.getDefault().sendTextMessage(Contacts.number2, null, "Want to know  more about us? Check us out at catalizeapp.com." + "\n" + "Happy connecting!", null, null);
 
-                } catch (Exception e) {
-                    AlertDialog.Builder alertDialogBuilder = new
-                            AlertDialog.Builder(Account.this);
-                    AlertDialog dialog = alertDialogBuilder.create();
+                //} catch (Exception e) {
+                //    AlertDialog.Builder alertDialogBuilder = new
+                //            AlertDialog.Builder(Account.this);
+                //    AlertDialog dialog = alertDialogBuilder.create();
 
 
-                    dialog.setMessage(e.getMessage());
+                //    dialog.setMessage(e.getMessage());
 
 
-                    dialog.show();
-                    startActivity(sendIntent);
+                //    dialog.show();
+                    //startActivity(sendIntent);
                 }
-            }
+            //}
         });
+    }
+
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Account.this, Account.class);
+            startActivity(intent);
+        } else {
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+        }
+        return;
     }
 
     @Override

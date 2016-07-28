@@ -9,6 +9,7 @@
     android:paddingTop="0dp"
     tools:context="com.catalizeapp.catalize_ss25.LoginActivity"
     android:weightSum="1">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         xmlns:app="http://schemas.android.com/apk/res-auto"

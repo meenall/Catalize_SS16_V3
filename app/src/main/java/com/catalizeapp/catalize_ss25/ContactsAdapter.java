@@ -64,6 +64,9 @@ public class ContactsAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View view, ViewGroup parent) {
+        if (com.catalizeapp.catalize_ss25.Contacts.changed) {
+            notifyDataSetChanged();
+        }
         final ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
