@@ -40,10 +40,9 @@ public class Account extends AppCompatActivity {
     private String lastName;
     private String personEmail;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.intro);
         context = this;
@@ -74,6 +73,7 @@ public class Account extends AppCompatActivity {
 
         //final Dialog dialog = new Dialog(Account.this);
         final EditText prompt = (EditText) findViewById(R.id.prompt);
+        prompt.requestFocus();
         if (Contacts.person1.contains("@") && Contacts.person2.contains("@")) {
             TextView name = (TextView) findViewById(R.id.nameerror);
             //name.setText("Set a name for " + Contacts.person1 + ": ");
@@ -101,6 +101,7 @@ public class Account extends AppCompatActivity {
                                     result = userInput.getText().toString();
                                     result2 = userInput2.getText().toString();
                                     prompt.append("Hello " + result + ", meet " + result2 + ". I am introducing you two because ");
+                                    prompt.requestFocus();
                                     //prompt.setText("Hello " + result + ", meet " + result2 + ". I am introducing you two because...");
                                     //Contacts.person1 = result;
                                 }
@@ -143,10 +144,12 @@ public class Account extends AppCompatActivity {
                                     result = userInput.getText().toString();
                                     if (Contacts.person1.contains("@")) {
                                         prompt.append("Hello " + result + ", meet " + Contacts.person2 + ". I am introducing you two because ");
+                                        prompt.requestFocus();
                                         //prompt.setText("Hello " + result + ", meet " + Contacts.person2 + ". I am introducing you two because...");
                                     } else {
 
                                         prompt.append("Hello " + Contacts.person1 + ", meet " + result + ". I am introducing you two because ");
+                                        prompt.requestFocus();
                                     }
                                     //Contacts.person1 = result;
                                 }
@@ -159,12 +162,13 @@ public class Account extends AppCompatActivity {
 
         } else {
             prompt.append("Hello " + Contacts.person1 + ", meet " + Contacts.person2 + ". I am introducing you two because ");
+            prompt.requestFocus();
         }
 
         if (cancel) {
             cancel = false;
-            Toast.makeText(context, "HI",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "HI",
+              //      Toast.LENGTH_SHORT).show();
         }
         final Intent sendIntent = new Intent(Intent.ACTION_VIEW);
         final EditText et=(EditText)findViewById(R.id.prompt);
@@ -188,14 +192,14 @@ public class Account extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //try {
-                    Toast.makeText(context, "HI",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "HI",
+                      //      Toast.LENGTH_SHORT).show();
                     SmsManager.getDefault().sendTextMessage("9154719427 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1, null, null);
                     SmsManager.getDefault().sendTextMessage("9154719427 ", null, Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
                     SmsManager.getDefault().sendTextMessage("2013751471 ", null, "Introduction made by: "+ firstName + " " + lastName + " " + personEmail+ "\n"+ "Contacts: " + Contacts.person1 + ": " + Contacts.number1, null, null);
                     SmsManager.getDefault().sendTextMessage("2013751471 ", null, Contacts.person2 + " " + Contacts.number2 + "\n" + et.getText().toString(), null, null);
-                    Toast.makeText(context, "Permissions",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Permissions",
+                      //      Toast.LENGTH_SHORT).show();
 
                     LayoutInflater li = LayoutInflater.from(context);
                     View promptsView = li.inflate(R.layout.sent, null);
@@ -255,8 +259,33 @@ public class Account extends AppCompatActivity {
             Intent intent = new Intent(Account.this, Account.class);
             startActivity(intent);
         } else {
-            // permission denied, boo! Disable the
-            // functionality that depends on this permission.
+            LayoutInflater li = LayoutInflater.from(context);
+            View promptsView = li.inflate(R.layout.denied, null);
+
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(
+                    context);
+
+            alertDialogBuilder.setView(promptsView);
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    flag = true;
+                                    //ok = true;
+                                    Intent intentLogOut = new Intent(Account.this, LoginActivity.class);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.clear();
+                                    editor.commit();
+                                    startActivity(intentLogOut);
+                                    finish();
+                                }
+                            });
+
+            // create alert dialog
+            android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
+            // show it
+            alertDialog.show();
         }
         return;
     }

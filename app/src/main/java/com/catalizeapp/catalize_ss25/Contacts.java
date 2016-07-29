@@ -141,8 +141,33 @@ public class Contacts extends AppCompatActivity {
             Intent intent = new Intent(Contacts.this, Contacts.class);
             startActivity(intent);
         } else {
-            // permission denied, boo! Disable the
-            // functionality that depends on this permission.
+            LayoutInflater li = LayoutInflater.from(context);
+            View promptsView = li.inflate(R.layout.denied, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    context);
+
+            alertDialogBuilder.setView(promptsView);
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    flag = true;
+                                    ok = true;
+                                    Intent intentLogOut = new Intent(Contacts.this, LoginActivity.class);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.clear();
+                                    editor.commit();
+                                    startActivity(intentLogOut);
+                                    finish();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show it
+            alertDialog.show();
         }
         return;
     }

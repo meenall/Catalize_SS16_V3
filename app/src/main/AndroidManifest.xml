@@ -37,6 +37,7 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".Account"
+            android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait"
             android:theme="@style/SuperCoolAppBarActivity"/>
             <meta-data android:name = "android.support.PARENT_ACTIVITY"

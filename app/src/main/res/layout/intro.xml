@@ -55,15 +55,17 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:inputType="textMultiLine"
                 android:ems="10"
                 android:textColor="#000000"
                 android:background="@android:color/transparent"
                 android:id="@+id/prompt"
                 android:textColorHint="#C1C3B8"
-                android:nestedScrollingEnabled="true"
-                android:scrollIndicators="top|right" />
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="top|left"> </EditText>
+            <requestFocus />
         </LinearLayout>
 
         <Button
